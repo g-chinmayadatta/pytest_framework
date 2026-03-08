@@ -1,0 +1,23 @@
+pytest_framework
+│
+├── src
+│   ├── core
+│   │   ├── driver_factory.py
+│   │   └── base_page.py
+│   │
+│   ├── pages
+│   │   ├── loginpage.py
+│   │   └── inventory.py
+│   │
+│   └── util
+│       ├── logger.py
+│       └── assertions.py   ←
+│
+├── testdata
+│   └── users.yaml
+│
+├── tests
+│   └── swaglabs
+│
+├── conftest.py
+└── pytest.ini
