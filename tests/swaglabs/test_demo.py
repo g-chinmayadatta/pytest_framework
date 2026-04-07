@@ -1,11 +1,17 @@
+import time
+
 import pytest
 
-from src.pages.checkout import CheckOut
-from src.pages.inventory import Inventory
-from src.pages.loginpage import LoginPage
-from src.pages.payment import Payment
-from src.pages.shopping_cart import ShoppingCart
+from src.pages.checkout_page import CheckOut
+from src.pages.inventory_page import Inventory
+from src.pages.login_page import LoginPage
+from src.pages.payment_page import Payment
+from src.pages.shopping_cart_page import ShoppingCart
+from src.util.assertions import Assertion
 from src.util.logger import logger
+from src.util.soft_assertions import SoftAssertion
+
+
 class TestDemo:
     def setup(self, open_browser):
         self.custom_driver = open_browser['driver']
@@ -16,6 +22,7 @@ class TestDemo:
         self.shopping_cart_page = ShoppingCart(self.custom_driver)
         self.checkout_page = CheckOut(self.custom_driver)
         self.payment_page = Payment(self.custom_driver)
+        self.soft_assert = SoftAssertion()
 
     @pytest.mark.parametrize("open_browser",[{"user":"standard"}],indirect=True)
     def test_standard(self, open_browser):
@@ -35,7 +42,6 @@ class TestDemo:
         }
         self.checkout_page.fill_details(details)
         self.checkout_page.click_continue_btn()
-        logger.info(self.payment_page.get_bill())
         self.payment_page.click_finish()
         self.payment_page.get_success_msg()
         self.payment_page.click_go_home()
@@ -44,3 +50,8 @@ class TestDemo:
     def test_locked(self, open_browser):
         self.setup(open_browser)
 
+
+    def test_xyz(self, open_browser):
+        self.setup(open_browser)
+        time.sleep(5)
+        Assertion.assert_true(False,"adsfgd")

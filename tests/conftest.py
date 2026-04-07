@@ -1,13 +1,11 @@
-
-
-
 import yaml
 from src.core.driver_factory import DriverFactory
 from src.util.logger import logger
 import pytest
 import os
 from datetime import datetime
-
+from src.api.api_client import APIClient
+from src.util.config_reader import ConfigReader
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item, call):
@@ -17,19 +15,10 @@ def pytest_runtest_makereport(item, call):
 
     if report.when == "call" and report.failed:
 
-        driver = None
-
-        if "open_browser" in item.funcargs:
-            open_browser = item.funcargs["open_browser"]
-
-            if isinstance(open_browser, dict):
-                driver = open_browser.get("driver")
-            else:
-                driver = open_browser
+        driver = getattr(item, "driver", None)
 
         if driver:
-
-            screenshot_dir = "reports/screenshots"
+            screenshot_dir = os.path.join("reports", "screenshots")
             os.makedirs(screenshot_dir, exist_ok=True)
 
             file_name = f"{item.name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
@@ -37,11 +26,10 @@ def pytest_runtest_makereport(item, call):
 
             driver.save_screenshot(file_path)
 
-            # attach screenshot to pytest-html report
             pytest_html = item.config.pluginmanager.getplugin("html")
 
             extra = getattr(report, "extra", [])
-            extra.append(pytest_html.extras.image(file_path))
+            extra.append(pytest_html.extras.image(os.path.abspath(file_path)))
             report.extra = extra
 
 def pytest_addoption(parser):
@@ -57,21 +45,41 @@ def pytest_addoption(parser):
             action="store",
             default=False,
             help="run the test in headless mode so no browser will be opened"
+        ),
+        parser.addoption(
+            "--env",
+            action="store",
+            default="qa",
+            help="run the test in which env qa or dev"
         )
     )
 
 @pytest.fixture(scope='function')
 def open_browser(request):
+    cli_env = request.config.getoption("--env")
+    file_config = ConfigReader.load_config(cli_env)
     logger.info("this is conftest open browser fixture")
-    browser = request.config.getoption("--browser")
-    head = request.config.getoption("--headless")
+    logger.info(f"running all teh tests in {cli_env} environment")
+    cli_browser = request.config.getoption("--browser")
+    browser = cli_browser if cli_browser else file_config['browser']
+    cli_head = request.config.getoption("--headless")
+    head = cli_head if cli_browser else file_config['head']
     user = getattr(request, 'param', "standard")
     with open("testdata/users.yaml",'r') as f:
         data = yaml.safe_load(f)
     user_key = data[user]
     logger.info(f"user name and password is {user_key}")
     driver = DriverFactory.get_driver(browser, head)
-    driver.get("https://www.saucedemo.com/")
+    driver.get(file_config['url'])
+    request.node.driver = driver # to use this in report generation
     yield {"driver":driver,"user":user_key['username'], "password":user_key['password']}
     driver.close()
     logger.info("end of open browser fixture")
+
+@pytest.fixture
+def api_client():
+
+    config = ConfigReader.load_config()
+    base_url = config["api_url"]
+
+    return APIClient(base_url)

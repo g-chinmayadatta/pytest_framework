@@ -13,7 +13,7 @@ def setup_logger():
     os.makedirs("logs", exist_ok=True)
 
     # File handler
-    file_handler = logging.FileHandler("logs/test.log")
+    file_handler = logging.FileHandler("logs/test.log", 'w')
     file_handler.setLevel(logging.INFO)
 
     # Console handler
