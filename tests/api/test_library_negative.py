@@ -4,8 +4,8 @@ from src.api.api_payloads import add_book_payload
 from src.api.api_assertions import APIAssertion
 
 
-@pytest.mark.api
-@pytest.mark.negative
+
+@pytest.mark.api_negative
 def test_add_book_missing_field(api_client):
 
     payload = {
