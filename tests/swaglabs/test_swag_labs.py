@@ -280,7 +280,3 @@ class TestSwagLabs:
         error_display = self.checkout_page.check_error_messages()
         self.soft_assert.assert_equal(error_display, True, "Verify error message is displayed for not providing user details in checkout page")
         self.soft_assert.assert_all()
-
-    def test_fail_example(self,open_browser):
-        self.setup(open_browser)
-        self.soft_assert.assert_true(False,"asdqwer")

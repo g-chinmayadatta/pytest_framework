@@ -1,5 +1,4 @@
 from selenium.webdriver.common.by import By
-from src.util.logger import logger
 from src.core.base_page import BasePage
 
 
@@ -16,14 +15,14 @@ class ShoppingCart:
         el = self.base_page.get_all_elements(self.cart_item_name)
         names = []
         for i in el:
-            names.append(self.base_page.get_text(i, True))
+            names.append(self.base_page.get_text(i))
         return names
 
     def get_total_price(self):
         total = 0
         el = self.base_page.get_all_elements(self.cart_item_price)
         for i in el:
-            t = self.base_page.get_text(i, True).split('$')[-1]
+            t = self.base_page.get_text(i).split('$')[-1]
             total+=float(t)
         return total
 
