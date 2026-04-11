@@ -33,4 +33,4 @@ jobs:
         run: pytest -m api_negative || true
 
       - name: Run UI Tests
-        run: pytest -m "not api"
+        run: pytest -m ui

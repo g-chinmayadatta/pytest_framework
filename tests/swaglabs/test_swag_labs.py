@@ -25,6 +25,7 @@ class TestSwagLabs:
         self.soft_assert = SoftAssertion()
         self.wait_util = WaitUtils(self.custom_driver)
 
+    @pytest.mark.ui
     @pytest.mark.login
     @pytest.mark.smoke
     def test_login_valid(self, open_browser):
@@ -36,6 +37,7 @@ class TestSwagLabs:
         self.soft_assert.assert_equal(inventory_page_displayed, True, "verifying after login inventory page is displayed")
         self.soft_assert.assert_all()
 
+    @pytest.mark.ui
     @pytest.mark.login
     @pytest.mark.parametrize("open_browser", ["locked"], indirect=True)
     def test_login_locked(self, open_browser):
@@ -48,6 +50,7 @@ class TestSwagLabs:
         self.soft_assert.assert_equal(message,expected_message,"verifying the error message for locked user")
         self.soft_assert.assert_all()
 
+    @pytest.mark.ui
     @pytest.mark.login
     def test_login_invalid_input(self, open_browser):
         self.setup(open_browser)
@@ -62,6 +65,7 @@ class TestSwagLabs:
         self.soft_assert.assert_in(message, expected_message,"verifying th error message after providing invalid credentials ")
         self.soft_assert.assert_all()
 
+    @pytest.mark.ui
     @pytest.mark.login
     def test_login_empty_user_input(self, open_browser):
         self.setup(open_browser)
@@ -76,6 +80,7 @@ class TestSwagLabs:
         self.soft_assert.assert_in(message, expected_message, "Verifying th error message after providing empty user name is provided")
         self.soft_assert.assert_all()
 
+    @pytest.mark.ui
     @pytest.mark.login
     def test_login_empty_password_input(self, open_browser):
         self.setup(open_browser)
@@ -90,6 +95,7 @@ class TestSwagLabs:
         self.soft_assert.assert_in(message, expected_message, "Verifying th error message after providing empty password is provided")
         self.soft_assert.assert_all()
 
+    @pytest.mark.ui
     @pytest.mark.inventory
     @pytest.mark.smoke
     def test_inventory_products(self, open_browser):
@@ -101,6 +107,7 @@ class TestSwagLabs:
         self.soft_assert.assert_equal(inventory_products_count, 6, "Verify products count in inventory page")
         self.soft_assert.assert_all()
 
+    @pytest.mark.ui
     @pytest.mark.inventory
     def test_inventory_products_titles(self, open_browser):
         self.setup(open_browser)
@@ -112,6 +119,7 @@ class TestSwagLabs:
         self.soft_assert.assert_equal(product_titles, expected_products_titles, "Verify product titles")
         self.soft_assert.assert_all()
 
+    @pytest.mark.ui
     @pytest.mark.inventory
     def test_inventory_products_price(self, open_browser):
         self.setup(open_browser)
@@ -123,6 +131,7 @@ class TestSwagLabs:
         self.soft_assert.assert_equal(product_price, expected_price, "Verifying teh product prices displayed")
         self.soft_assert.assert_all()
 
+    @pytest.mark.ui
     @pytest.mark.inventory
     def test_sort_titles(self,open_browser):
         self.setup(open_browser)
@@ -137,6 +146,7 @@ class TestSwagLabs:
         self.soft_assert.assert_equal(sorting_check, True, "Verifying the sorting titles")
         self.soft_assert.assert_all()
 
+    @pytest.mark.ui
     @pytest.mark.inventory
     def test_sort_titles_reverse(self, open_browser):
         self.setup(open_browser)
@@ -151,6 +161,7 @@ class TestSwagLabs:
         self.soft_assert.assert_equal(sorting_check, True, "Verifying the sorting titles")
         self.soft_assert.assert_all()
 
+    @pytest.mark.ui
     @pytest.mark.inventory
     def test_sort_price(self, open_browser):
         self.setup(open_browser)
@@ -167,6 +178,7 @@ class TestSwagLabs:
         self.soft_assert.assert_equal(sorting_check, True, "Verifying the sorting price")
         self.soft_assert.assert_all()
 
+    @pytest.mark.ui
     @pytest.mark.inventory
     def test_sort_price_reverse(self, open_browser):
         self.setup(open_browser)
@@ -183,6 +195,7 @@ class TestSwagLabs:
         self.soft_assert.assert_equal(sorting_check, True, "Verifying the sorting price")
         self.soft_assert.assert_all()
 
+    @pytest.mark.ui
     @pytest.mark.inventory
     @pytest.mark.smoke
     def test_product_add_to_cart(self, open_browser):
@@ -267,6 +280,7 @@ class TestSwagLabs:
         self.soft_assert.assert_equal(total_amount, total_price+tax, "Verifying the total cost of products")
         self.soft_assert.assert_all()
 
+    @pytest.mark.ui
     @pytest.mark.cart
     def test_checkout_empty_user_details(self, open_browser):
         self.setup(open_browser)
