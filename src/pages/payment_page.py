@@ -15,7 +15,7 @@ class Payment:
 
 
     def get_success_msg(self):
-        self.base_page.get_text(self.success_msg)
+        return self.base_page.get_text(self.success_msg)
 
     def click_finish(self):
         self.base_page.click_element(self.finish_btn)

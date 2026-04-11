@@ -1,5 +1,5 @@
 import pytest
-from src.api.endpoints import Endpoints
+from src.api.api_endpoint import Endpoints
 from src.api.api_payloads import add_book_payload
 from src.api.api_assertions import APIAssertion
 

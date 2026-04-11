@@ -1,6 +1,7 @@
 from selenium.common import TimeoutException
 from selenium.webdriver.remote.webelement import WebElement
 
+from src.util.logger import logger
 from src.util.wait_utils import WaitUtils
 
 
@@ -17,8 +18,8 @@ class BasePage:
         try:
             element = self.wait.wait_for_element_present(locator)
             return element
-        except TimeoutException:
-            print(f"Element not found: {locator}")
+        except TimeoutException as e:
+            logger.info(f" got time out exception {e}")
             return None
 
     def get_all_elements(self, locator):

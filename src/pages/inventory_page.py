@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 from src.util.logger import logger
 from src.core.base_page import BasePage
+from src.util.wait_utils import WaitUtils
 
 
 class Inventory:
@@ -16,12 +17,12 @@ class Inventory:
 
     def __init__(self, driver):
         self.base_page = BasePage(driver)
-
+        self.wait_util = WaitUtils(driver)
     def get_product_titles(self):
         el = self.base_page.get_all_elements(self.product_titles)
         names = []
         for i in el:
-            names.append(self.base_page.get_text(i, True))
+            names.append(self.base_page.get_text(i))
         return names
 
     def add_products_to_cart(self, name):
@@ -56,12 +57,12 @@ class Inventory:
         el = self.base_page.get_all_elements(self.product_price)
         prices = []
         for i in el:
-            prices.append(float(self.base_page.get_text(i, True).split('$')[-1]))
+            prices.append(float(self.base_page.get_text(i).split('$')[-1]))
         return prices
 
     def get_cart_count(self):
-        self.base_page.wait_until(self.cart_count)
-        return int(self.base_page.get_text(self.cart_count, True))
+        self.wait_util.wait_for_element_present(self.cart_count)
+        return int(self.base_page.get_text(self.cart_count))
 
     def select_sort_option(self, option):
         self.base_page.click_element(self.sort_btn)
