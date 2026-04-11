@@ -63,7 +63,7 @@ def open_browser(request):
     cli_browser = request.config.getoption("--browser")
     browser = cli_browser if cli_browser else file_config['browser']
     cli_head = request.config.getoption("--headless")
-    head = cli_head if cli_browser else file_config['head']
+    head = cli_head if cli_browser else False
     user = getattr(request, 'param', "standard")
     with open("testdata/users.yaml",'r') as f:
         data = yaml.safe_load(f)

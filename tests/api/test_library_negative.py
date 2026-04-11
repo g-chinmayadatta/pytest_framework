@@ -10,7 +10,7 @@ def test_add_book_missing_field(api_client):
 
     payload = {
         "name": "Test Book",
-        "isbn": "abc",
+        "isbn": "",
         "author": "Test Author"
     }
 
@@ -19,8 +19,7 @@ def test_add_book_missing_field(api_client):
     APIAssertion.assert_status_code(response, 404)
 
 
-@pytest.mark.api
-@pytest.mark.negative
+@pytest.mark.api_negative
 def test_add_duplicate_book(api_client):
 
     payload, _ = add_book_payload()
@@ -32,8 +31,8 @@ def test_add_duplicate_book(api_client):
     APIAssertion.assert_in("already exists", response.text)
 
 
-@pytest.mark.api
-@pytest.mark.negative
+
+@pytest.mark.api_negative
 def test_get_invalid_book(api_client):
 
     response = api_client.get(Endpoints.GET_BOOK, params={"ID": "invalid123"})
@@ -43,8 +42,7 @@ def test_get_invalid_book(api_client):
     assert data == []
 
 
-@pytest.mark.api
-@pytest.mark.negative
+@pytest.mark.api_negative
 def test_delete_invalid_book(api_client):
 
     response = api_client.delete(

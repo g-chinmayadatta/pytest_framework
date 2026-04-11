@@ -2,6 +2,7 @@ import pytest
 from src.api.api_endpoint import Endpoints
 from src.api.api_payloads import add_book_payload
 from src.api.api_assertions import APIAssertion
+from src.api.api_logger import logger
 
 
 @pytest.mark.api
@@ -23,8 +24,9 @@ def test_library_api_flow(api_client):
     data = get_response.json()
 
     APIAssertion.assert_not_empty(data)
-    APIAssertion.assert_equal(data["isbn"], payload["isbn"], "ISBN mismatch")
-    APIAssertion.assert_equal(data["aisle"], payload["aisle"], "Aisle mismatch")
+    logger.info(f"the api response is {data}")
+    APIAssertion.assert_equal(data[0]["isbn"], payload["isbn"], "ISBN mismatch")
+    APIAssertion.assert_equal(data[0]["aisle"], payload["aisle"], "Aisle mismatch")
 
     # DELETE
     delete_response = api_client.delete(

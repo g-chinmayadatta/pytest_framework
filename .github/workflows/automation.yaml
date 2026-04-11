@@ -29,5 +29,8 @@ jobs:
       - name: Run API Tests
         run: pytest -m api
 
+      - name: Run negative tests (optional)
+        run: pytest -m api_negative || true
+
       - name: Run UI Tests
         run: pytest -m "not api"
