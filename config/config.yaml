@@ -1,11 +1,9 @@
 dev:
   url: "https://www.google.com"
   browser: "chrome"
-  headless: false
 
 qa:
   url: "https://www.saucedemo.com/"
   browser: "chrome"
-  headless: false
 
 api_url: "https://rahulshettyacademy.com"
