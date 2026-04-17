@@ -6,7 +6,7 @@ from src.api.api_logger import logger
 
 
 @pytest.mark.api
-def test_library_api_flow(api_client):
+def test_library_api_flow(api_client, book_cleanup):
 
     payload, book_id = add_book_payload()
 
@@ -15,6 +15,7 @@ def test_library_api_flow(api_client):
 
     APIAssertion.assert_status_code(add_response, 200)
     APIAssertion.assert_json_value(add_response, "Msg", "successfully added")
+    book_cleanup(book_id)
 
     # GET
     get_response = api_client.get(Endpoints.GET_BOOK, params={"ID": book_id})
@@ -27,12 +28,3 @@ def test_library_api_flow(api_client):
     logger.info(f"the api response is {data}")
     APIAssertion.assert_equal(data[0]["isbn"], payload["isbn"], "ISBN mismatch")
     APIAssertion.assert_equal(data[0]["aisle"], payload["aisle"], "Aisle mismatch")
-
-    # DELETE
-    delete_response = api_client.delete(
-        Endpoints.DELETE_BOOK,
-        json={"ID": book_id}
-    )
-
-    APIAssertion.assert_status_code(delete_response, 200)
-    APIAssertion.assert_in("successfully deleted", delete_response.text)

@@ -28,7 +28,7 @@ class BasePage:
             elements = self.driver.find_elements(*locator)
             return elements
         except TimeoutException:
-            print(f"No elements found: {locator}")
+            logger.info(f"No elements found: {locator}")
             return []
 
     def click_element(self, locator, scroll = False):

@@ -13,7 +13,7 @@ from src.util.wait_utils import WaitUtils
 
 class TestSwagLabs:
 
-    def setup(self, open_browser):
+    def setup_method(self, open_browser):
         self.custom_driver = open_browser['driver']
         self.user = open_browser['user']
         self.password = open_browser['password']
@@ -62,7 +62,7 @@ class TestSwagLabs:
         message = self.login_page.get_error_message()
         self.soft_assert.assert_equal(login_page_displayed, True, "verifying if login page is displayed")
         self.soft_assert.assert_equal(error_displayed, True, "Verifying if error message is displayed after providing invalid credentials")
-        self.soft_assert.assert_in(message, expected_message,"verifying th error message after providing invalid credentials ")
+        self.soft_assert.assert_in(expected_message, message,"verifying th error message after providing invalid credentials ")
         self.soft_assert.assert_all()
 
     @pytest.mark.ui
@@ -77,7 +77,7 @@ class TestSwagLabs:
         message = self.login_page.get_error_message()
         self.soft_assert.assert_equal(login_page_displayed, True, "Verifying if login page is displayed")
         self.soft_assert.assert_equal(error_displayed, True,"Verifying if error message is displayed after providing empty user name is provided")
-        self.soft_assert.assert_in(message, expected_message, "Verifying th error message after providing empty user name is provided")
+        self.soft_assert.assert_in(expected_message, message, "Verifying th error message after providing empty user name is provided")
         self.soft_assert.assert_all()
 
     @pytest.mark.ui
@@ -92,7 +92,7 @@ class TestSwagLabs:
         message = self.login_page.get_error_message()
         self.soft_assert.assert_equal(login_page_displayed, True, "Verifying if login page is displayed")
         self.soft_assert.assert_equal(error_displayed, True,"Verifying if error message is displayed after providing empty password is provided")
-        self.soft_assert.assert_in(message, expected_message, "Verifying th error message after providing empty password is provided")
+        self.soft_assert.assert_in(expected_message, message, "Verifying th error message after providing empty password is provided")
         self.soft_assert.assert_all()
 
     @pytest.mark.ui

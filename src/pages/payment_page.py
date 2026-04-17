@@ -1,3 +1,4 @@
+from decimal import Decimal
 from selenium.webdriver.common.by import By
 from src.core.base_page import BasePage
 
@@ -24,12 +25,10 @@ class Payment:
         self.base_page.click_element(self.go_home_btn,True)
 
     def get_tax(self):
-        tax = float(self.base_page.get_text(self.tax_on_items).split('$')[-1])
-        return tax
+        return float(Decimal(self.base_page.get_text(self.tax_on_items).split('$')[-1]))
 
     def get_total_cart_amount(self):
-        total = float(self.base_page.get_text(self.total_cart_amount).split('$')[-1])
-        return total
+        return float(Decimal(self.base_page.get_text(self.total_cart_amount).split('$')[-1]))
 
     def check_summary_page(self):
         return self.base_page.is_element_visible(self.summary_title)

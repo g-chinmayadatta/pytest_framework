@@ -4,12 +4,20 @@ from src.core.base_page import BasePage
 from src.util.wait_utils import WaitUtils
 
 
+def _xpath_str(value):
+    """Return an XPath string literal that safely handles single quotes."""
+    if "'" not in value:
+        return f"'{value}'"
+    parts = value.split("'")
+    return "concat('" + "', \"'\", '".join(parts) + "')"
+
+
 class Inventory:
     product_titles = (By.XPATH,"//div[@class='inventory_item_name ']")
-    product_add_cart_btn = (By.XPATH,"//div[@class='inventory_list']//div[@class='inventory_item_name ' and text()='{}']/ancestor::div[@class='inventory_item']//button[contains(@class,'btn_inventory')]")
+    product_add_cart_btn = (By.XPATH,"//div[@class='inventory_list']//div[@class='inventory_item_name ' and text()={}]/ancestor::div[@class='inventory_item']//button[contains(@class,'btn_inventory')]")
     shopping_cart = (By.XPATH,"//a[@class='shopping_cart_link']")
     menu_btn  = (By.XPATH,"//button[@id='react-burger-menu-btn']")
-    menu_options = (By.XPATH,"//div[@class='bm-menu']//a[text()='{}']")
+    menu_options = (By.XPATH,"//div[@class='bm-menu']//a[text()={}]")
     product_price = (By.XPATH,"//div[@class='inventory_item_price']")
     sort_btn = (By.XPATH,"//div[@class='right_component']//span[@class='select_container']")
     sort_dropdown = (By.XPATH,"//span[@class='select_container']//option[text()='{}']")
@@ -28,8 +36,7 @@ class Inventory:
     def add_products_to_cart(self, name):
         try:
             for i in name:
-                self.base_page.click_element((self.product_add_cart_btn[0], self.product_add_cart_btn[-1].format(i)), True)
-            return True
+                return self.base_page.click_element((self.product_add_cart_btn[0], self.product_add_cart_btn[-1].format(_xpath_str(i))), True)
         except Exception as e:
             logger.info(f" unable to add all th products to cart {e}")
             return False
@@ -48,7 +55,7 @@ class Inventory:
         self.base_page.click_element(self.menu_btn, True)
 
     def click_menu_option(self, option):
-        self.base_page.click_element((self.menu_options[0],self.menu_options[-1].format(option)),True)
+        self.base_page.click_element((self.menu_options[0], self.menu_options[-1].format(_xpath_str(option))), True)
 
     def get_products_count(self):
         return len(self.base_page.get_all_elements(self.product_titles))

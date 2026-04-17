@@ -1,4 +1,5 @@
 import yaml
+from pathlib import Path
 from src.core.driver_factory import DriverFactory
 from src.util.logger import logger
 import pytest
@@ -66,7 +67,8 @@ def open_browser(request):
     head = cli_head if cli_head else file_config["headless"]
     logger.info(f"the head options {head} {file_config['headless']}")
     user = getattr(request, 'param', "standard")
-    with open("testdata/users.yaml",'r') as f:
+    users_path = Path(__file__).parent.parent / "testdata" / "users.yaml"
+    with open(users_path, 'r') as f:
         data = yaml.safe_load(f)
     user_key = data[user]
     logger.info(f"user name and password is {user_key}")
@@ -74,7 +76,7 @@ def open_browser(request):
     driver.get(file_config['url'])
     request.node.driver = driver # to use this in report generation
     yield {"driver":driver,"user":user_key['username'], "password":user_key['password']}
-    driver.close()
+    driver.quit()
     logger.info("end of open browser fixture")
 
 @pytest.fixture
