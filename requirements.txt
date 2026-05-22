@@ -1,0 +1,6 @@
+pytest~=9.0.0
+selenium~=4.41.0
+webdriver_manager~= 4.0.0
+pytest-html~=3.2.0
+pyyaml~=6.0.3
+requests
