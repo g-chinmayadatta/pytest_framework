@@ -4,7 +4,7 @@ from src.api.api_payloads import add_book_payload
 from src.api.api_assertions import APIAssertion
 
 
-@pytest.mark.api
+
 @pytest.mark.api_negative
 def test_add_book_missing_field(api_client):
 
@@ -18,7 +18,7 @@ def test_add_book_missing_field(api_client):
 
     APIAssertion.assert_status_code(response, 404)
 
-@pytest.mark.api
+
 @pytest.mark.api_negative
 def test_add_duplicate_book(api_client):
 
@@ -31,7 +31,7 @@ def test_add_duplicate_book(api_client):
     APIAssertion.assert_in("already exists", response.text)
 
 
-@pytest.mark.api
+
 @pytest.mark.api_negative
 def test_get_invalid_book(api_client):
 
@@ -41,7 +41,7 @@ def test_get_invalid_book(api_client):
 
     assert data == []
 
-@pytest.mark.api
+
 @pytest.mark.api_negative
 def test_delete_invalid_book(api_client):
 
