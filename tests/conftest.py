@@ -28,9 +28,10 @@ def pytest_runtest_makereport(item, call):
 
             pytest_html = item.config.pluginmanager.getplugin("html")
 
-            extra = getattr(report, "extra", [])
-            extra.append(pytest_html.extras.image(os.path.abspath(file_path)))
-            report.extra = extra
+            if pytest_html:
+                extra = getattr(report, "extra", [])
+                extra.append(pytest_html.extras.image(os.path.abspath(file_path)))
+                report.extra = extra
 
             
 def pytest_addoption(parser):
@@ -55,6 +56,7 @@ def open_browser(request):
     head = request.config.getoption("--headless")
     driver = DriverFactory.get_driver(browser,head)
     driver.get(file_config['ui_url'])
+    request.node.driver = driver # to use this in report generation
     yield driver
     driver.quit()
 
