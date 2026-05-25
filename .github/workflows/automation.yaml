@@ -2,7 +2,7 @@ name: Run Automation Tests
 
 on:
   push:
-    branches: [chinmaya_automation]
+    branches: [$GITHUB_REF_NAME]
   pull_request:
     branches: [ main ]
 
